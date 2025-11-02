@@ -181,7 +181,7 @@ pacstrap /mnt tang openssh ethtool iptables-nft firewalld --noconfirm &&
 sleep 1
 clear
 echo "level 25"
-pacstrap /mnt tuned tuned-ppd openssh rsync git btop less --noconfirm &&
+pacstrap /mnt rsync git btop less --noconfirm &&
 
 
 ## app level 12
@@ -251,6 +251,7 @@ genfstab -U /mnt > /mnt/etc/fstab &&
 echo "" >> /mnt/etc/fstab &&
 echo "# /dev/mapper/proc-temp" >> /mnt/etc/fstab &&
 echo "tmpfs     					/tmp        		tmpfs   defaults,rw,nosuid,nodev,noexec,relatime,size=256M" >>  /mnt/etc/fstab &&
+
 
 sleep 1
 clear

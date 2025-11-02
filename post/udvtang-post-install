@@ -1,10 +1,12 @@
 #!/bin/bash
 
-cd / &&
 
-git clone https://github.com/blackbird-package/mobconf.git /opt &&
-cp -fr /opt/mnt/*  /mnt/ &&
-cp -fr /opt/udev/* /mnt/ &&
+cd / &&
+git clone https://github.com/blackbird-package/mobconf.git /opt/mobconf &&
+cp -fr /opt/mobconf/mnt/*  / &&
+cp -fr /opt/mobconf/udev/* / &&
+
+
 
 ## hostname
 ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime &&
@@ -14,6 +16,7 @@ timedatectl set-timezone Asia/Jakarta &&
 timedatectl status &&
 timedatectl show-timesync --all &&
 systemctl enable systemd-timesyncd.service &&
+
 
 
 ## locale
@@ -41,8 +44,7 @@ mkdir -p /opt/flat &&
 ln -sf /opt/flat /var/lib/flatpak &&
 pacstrap /mnt flatpak gnome-software --noconfirm &&
 
-
-flatpak install --system -y --noninteractive flathub \ 
+flatpak install --system -y --noninteractive flathub \
     org.mozilla.firefox \
     com.google.Chrome \
     com.visualstudio.code \
