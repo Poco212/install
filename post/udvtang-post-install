@@ -40,17 +40,15 @@ fi
 
 
 ## hostname
-sleep 1 &&
-clear &&
+sleep 1 && clear &&
 echo "level 1" &&
 mkdir /usr/local/rbin &&
 echo $DESK_HOSTNAME > /etc/hostname
 
 
 ## timectl
-sleep 1
-clear
-echo "level 2"
+sleep 1 && clear &&
+cecho "level 2"
 ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime &&
 hwclock --systohc &&
 timedatectl set-ntp true &&
@@ -61,8 +59,7 @@ systemctl enable systemd-timesyncd.service &&
 
 
 ## locale
-sleep 1
-clear
+sleep 1 && clear &&
 echo "level 3"
 locale-gen  &&
 
