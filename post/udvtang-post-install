@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source /opt/config
+source /post/config
 shadow='$6$xyz$TcdM.glK/cahP/.4LRfB6cLr9mczMfZazDDq4Bou89AbP36r/UXNQ6TIxuCpM3hZ9V5QKTSo6954a.1DM3k7E0'
 
 if [[ -z $PHYSICAL_BOOT ]];then
