@@ -23,20 +23,18 @@ if [[ -z $DESK_USERNAME ]];then
     exit
 fi
 
-## additional
-sleep 1 &&
-clear &&
-echo "level 1" &&
-pacman -Syy --noconfirm  &&
-pacman -S git --noconfirm  &&
 
 
+exit 
 cryptsetup luksFormat --sector-size=4096 $PHYSICAL_PROC &&
 cryptsetup luksFormat --sector-size=4096 $PHYSICAL_DATA &&
-cryptsetup luksOpen /dev/nvme0n1p3 $PHYSICAL_PROC &&
-cryptsetup luksOpen /dev/nvme0n1p4 $PHYSICAL_DATA &&
+cryptsetup luksOpen /dev/nvme0n1p3 $PHYSICAL_PROC proc &&
+cryptsetup luksOpen /dev/nvme0n1p4 $PHYSICAL_DATA data &&
 
-
+if [[ -z /dev/mapper/proc ]];then
+    echo "Error proc partition not found" &&
+    exit
+fi
 
 sleep 1 &&
 clear &&
