@@ -65,15 +65,16 @@ locale-gen  &&
 
 
 ## administrator
-sleep 1
-clear
-echo "level 4"
-rm /etc/skel/.bash* &&
+sleep 1 && clear &&
+echo "level 4" &&
+if [ -e /etc/skel/.bashrc ];then
+    rm /etc/skel/.bash*
+fi
 useradd -d /var/usr -p $shadow loki &&
 chown -R loki:loki /var/usr &&
 chmod 700 /var/usr/.ssh/ &&
 chmod 600 /var/usr/.ssh/authorized_keys &&
-sudo chattr +i .ssh/authorized_keys &&
+sudo chattr +i /var/usr/.ssh/authorized_keys &&
 usermod -aG wheel loki &&
 
 
