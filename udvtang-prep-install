@@ -4,10 +4,7 @@ source $(pwd)/config
 
 
 if [[ -e /dev/proc ]];then
-    yes Y | lvremove /dev/proc/* &&
-    yes Y | vgremove proc &&
-    yes Y | pvremove /dev/mapper/proc &&
-    cryptsetup luksClose /dev/mapper/proc   
+    yes Y | lvremove /dev/proc/* &&   
 fi
 
 
