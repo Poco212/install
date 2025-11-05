@@ -4,7 +4,7 @@ source $(pwd)/config
 
 if [[ -e /mnt/* ]];then
     umount -R /mnt
-if
+fi
 
 if [[ -e /dev/proc ]];then
     swapoff /dev/proc/swap
