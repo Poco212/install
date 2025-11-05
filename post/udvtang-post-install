@@ -81,10 +81,6 @@ fi
 
 
 
-
-
-
- 
 ## virtualmin
 sleep 3 && clear &&
 echo "level 5" &&
@@ -145,7 +141,9 @@ echo "games ALL=(ALL:ALL) ALL" > /etc/sudoers.d/game &&
 ## params conf
 sleep 3 && clear &&
 echo "level 10" &&
+echo "register encrypted volume to kernel paramater" &&
 echo "cryptdevice=UUID=$(blkid -s UUID -o value $PHYSICAL_PROC):proc root=/dev/proc/root" > /etc/cmdline.d/01-boot.conf &&
+echo "register encrypted volume to crypttab" &&
 echo "data UUID=$(blkid -s UUID -o value $PHYSICAL_DATA) none" >> /etc/crypttab &&
 
 
@@ -153,6 +151,7 @@ echo "data UUID=$(blkid -s UUID -o value $PHYSICAL_DATA) none" >> /etc/crypttab 
 ## nbde server
 sleep 3 && clear &&
 echo "level 11" &&
+echo "Register nbde addressing" &&
 echo "ip=$IP_ADDRESSING::10.10.1.1:255.255.255.0::eth0:none nameserver=10.10.1.1 nameserver=1.1.1.1 nameserver=8.8.8.8 nameserver=1.0.0.1 nameserver=8.8.4.4 nameserver=9.9.9.9 nameserver=149.112.112.112 " > /etc/cmdline.d/05-nets.conf &&
 
 
