@@ -98,7 +98,7 @@ fi
 
 ## useradd
 sleep 1 && clear &&
-echo "level 13" &&
+echo "level 6" &&
 touch /etc/sudoers.d/none &&
 
 if [[ -z $( grep $DESK_USERNAME /etc/passwd ) ]];then
@@ -110,7 +110,7 @@ echo "$DESK_USERNAME ALL=(ALL:ALL) ALL" > /etc/sudoers.d/none &&
 
 ## application
 sleep 1 && clear &&
-echo "level 6"&&
+echo "level 7"&&
 mkdir -p /opt/flat &&
 ln -sf /opt/flat /var/lib/flatpak &&
 pacstrap /mnt flatpak gnome-software --noconfirm &&
@@ -119,7 +119,7 @@ pacstrap /mnt flatpak gnome-software --noconfirm &&
 
 ## aide hids
 sleep 1 && clear
-echo "level 7" &&
+echo "level 8" &&
 pkg-config --libs --cflags glib-2.0 &&
 cd /tmp &&
 wget https://github.com/aide/aide/releases/download/v0.19.2/aide-0.19.2.tar.gz  &&
@@ -132,7 +132,7 @@ mkdir -p /var/lib/aide &&
 
 ## clevis
 sleep 1 && clear &&
-echo "level 8" &&
+echo "level 9" &&
 echo "$DESK_USERNAME ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/none &&
 su - $DESK_USERNAME -c 'git clone https://aur.archlinux.org/mkinitcpio-clevis-hook.git /var/$DESK_USERNAME/clevis-hook' &&
 su - $DESK_USERNAME -c 'cd /var/$DESK_USERNAME/clevis-hook && makepkg -rsi --noconfirm' &&
@@ -142,7 +142,7 @@ echo "$DESK_USERNAME ALL=(ALL:ALL) ALL" > /etc/sudoers.d/none &&
 
 ## params conf
 sleep 1 && clear &&
-echo "level 9" &&
+echo "level 10" &&
 echo "cryptdevice=UUID=$(blkid -s UUID -o value $PHYSICAL_PROC):proc root=/dev/proc/root" > /etc/cmdline.d/01-boot.conf &&
 echo "data UUID=$(blkid -s UUID -o value $PHYSICAL_DATA) none" >> /etc/crypttab &&
 
@@ -150,13 +150,13 @@ echo "data UUID=$(blkid -s UUID -o value $PHYSICAL_DATA) none" >> /etc/crypttab 
 
 ## nbde server
 sleep 1 && clear &&
-echo "level 10" &&
+echo "level 11" &&
 echo "ip=$IP_ADDRESSING::10.10.1.1:255.255.255.0::eth0:none nameserver=10.10.1.1 nameserver=1.1.1.1 nameserver=8.8.8.8 nameserver=1.0.0.1 nameserver=8.8.4.4 nameserver=9.9.9.9 nameserver=149.112.112.112 " > /etc/cmdline.d/05-nets.conf &&
 
 
 ## boot config
 sleep 1 && clear &&
-echo "level 11" &&
+echo "level 12" &&
 rm -fr /etc/mkinitcpio.conf.d &&
 rm /boot/initramfs-linux-hardened* &&
 mkdir -p /boot/efi /boot/efi/linux /boot/efi/systemd /boot/efi/rescue /boot/efi/boot /boot/kernel &&
@@ -168,7 +168,7 @@ mkinitcpio -P &&
 
 ## service activation
 sleep 1 && clear &&
-echo "level 12" &&
+echo "level 13" &&
 systemctl enable systemd-timesyncd.service &&
 systemctl enable tangd.socket &&
 systemctl enable apparmor.service &&
@@ -193,7 +193,7 @@ systemctl enable clevis-luks-askpass.path &&
 
 ## bind tang
 sleep 1 && clear &&
-echo "level 12" &&
+echo "level 14" &&
 echo "Insert proc disk encryption password"
 sudo clevis luks bind -d $PHYSICAL_PROC tang '{"url":"http://10.10.1.16:7500"}' &&
 echo "Insert data disk encryption password"
@@ -201,6 +201,6 @@ sudo clevis luks bind -d $PHYSICAL_DATA tang '{"url":"http://10.10.1.16:7500"}' 
 
 ## finishing
 sleep 1 && clear &&
-echo "level 14" &&
+echo "level 15" &&
 aide --init &&
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
