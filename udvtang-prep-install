@@ -17,7 +17,6 @@ if [[ -z $PHYSICAL_DATA ]];then
     exit
 fi
 
-
 if [[ -z $DESK_USERNAME ]];then
     echo "Error username data is empty" &&
     exit
@@ -41,7 +40,7 @@ if [[ -z /dev/mapper/data ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 2" &&
 echo "create volume group proc" &&
 if [[ -z /dev/mapper/proc ]];then
@@ -50,7 +49,7 @@ if [[ -z /dev/mapper/proc ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 3" &&
 lvcreate -L 10G proc -n root &&
 mkfs.ext4 -b 4096 /dev/proc/root &&
@@ -62,7 +61,7 @@ if [[ -z /dev/proc/root ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 4" &&
 yes Y | mkfs.vfat -F32 -S 4096 -n BOOT $PHYSICAL_BOOT &&
 mkdir /mnt/boot &&
@@ -73,7 +72,7 @@ if [[ -z /mnt/boot ]];then
     exit
 fi
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 5" &&
 lvcreate -L 15G proc -n opts &&
 yes Y | mkfs.ext4 -b 4096 /dev/proc/opts &&
@@ -86,7 +85,7 @@ if [[ -z /dev/proc/opts ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 6" &&
 lvcreate -L 2G proc -n vars &&
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vars &&
@@ -99,7 +98,7 @@ if [[ -z /dev/proc/vars ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 7" 
 lvcreate -L 512M proc -n libs &&
 yes Y | mkfs.ext4 -b 4096 /dev/proc/libs &&
@@ -112,7 +111,7 @@ if [[ -z /dev/proc/libs ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 8" &&
 lvcreate -L 512M proc -n game &&
 yes Y | mkfs.ext4 -b 4096 /dev/proc/game &&
@@ -125,7 +124,7 @@ if [[ -z /dev/proc/game ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 9" &&
 lvcreate -L 1G proc -n vlog &&
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vlog &&
@@ -138,7 +137,7 @@ if [[ -z /dev/proc/vlog ]];then
 fi
 
 
-sleep 1 &&
+sleep 3 &&
 clear &&
 echo "level 10" &&
 lvcreate -L 256M proc -n vaud &&
@@ -152,7 +151,7 @@ if [[ -z /dev/proc/vaud ]];then
 fi
 
 
-sleep 1 &&
+sleep 3 &&
 clear &&
 echo "level 11" &&
 lvcreate -L 2G proc -n vtmp &&
@@ -166,7 +165,7 @@ if [[ -z /dev/proc/vtmp ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 12" &&
 lvcreate -L 2G proc -n vpac &&
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vpac &&
@@ -179,7 +178,7 @@ if [[ -z /dev/proc/vpac ]];then
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 13" &&
 lvcreate -L 512M proc -n ring &&
 cryptsetup luksFormat --sector-size=4096 /dev/proc/ring &&
@@ -193,7 +192,7 @@ else
 fi
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 14" &&
 lvcreate -l100%FREE proc -n docs &&
 mkfs.ext4 -b 4096 /dev/proc/docs &&
@@ -207,7 +206,7 @@ fi
 
 
 ## network
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 15" &&
 pacstrap /mnt openssh ethtool iptables-nft firewalld --noconfirm  &&
 cp /etc/system/network/* /mnt/etc/systemd/network/  &&
@@ -220,90 +219,90 @@ fi
 
 
 ## kernel
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 16" &&
 pacstrap /mnt linux-hardened linux-firmware mkinitcpio base lvm2 btrfs-progs bubblewrap-suid --noconfirm &&
 
 
 ## devel
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 17" &&
 pacstrap /mnt sudo debugedit fakeroot pkgconf bison gcc pcre flex wget make gcc curl less git --noconfirm &&
 
 
 ## audio
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 18" &&
 pacstrap /mnt pipewire pipewire-pulse pipewire-jack wireplumber pavucontrol sof-firmware mpd mpc --noconfirm &&
 
 
 ## graphic
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 19" &&
 pacstrap /mnt brightnessctl xorg-xwayland --noconfirm &&
 
 
 ## fontsys
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 20" &&
 pacstrap /mnt ttf-jetbrains-mono-nerd ttf-droid --noconfirm &&
 
 ## desktop
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 21" &&
 pacstrap /mnt sddm uwsm hyprland hyprpicker hyprshot hypridle hyprlock hyprpolkitagent xdg-desktop-portal-hyprland qt5-wayland qt6-wayland wl-clipboard cliphist mailcap --noconfirm &&
 
 
 ## panelis
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 22" &&
 pacstrap /mnt mako waybar wofi --noconfirm &&
 
 
 ## fileman
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 23" &&
 pacstrap /mnt nautilus nautilus-image-converter sushi --noconfirm &&
 
 
 ## terminal
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 24" &&
 pacstrap /mnt kitty kitty-terminfo neovim --noconfirm &&
 
 
 ## password
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 25" &&
 pacstrap /mnt gnome-keyring libsecret libpam-google-authenticator libpwquality cracklib polkit apparmor qrencode --noconfirm &&
 
 
 ## monitoring
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 26" &&
 pacstrap /mnt prometheus prometheus-node-exporter btop --noconfirm &&
 
 
 ## performance
-sleep 1 && clear && 
+sleep 3 && clear && 
 echo "level 27" &&
 pacstrap /mnt irqbalance tuned tuned-ppd --noconfirm &&
 
 
 ## backup
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 28" &&
 pacstrap /mnt rsync grsync --noconfirm &&
 
 
 ## hosting
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 29" &&
 pacstrap /mnt go hugo nginx --noconfirm &&
 
 
 ## ucode
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 30" &&
 if [[ ! -z $( cat /proc/cpuinfo | grep "Intel" )  ]];then
     pacstrap /mnt intel-ucode --noconfirm
@@ -314,18 +313,18 @@ fi
 
 
 ## ndbe
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 31" &&
 pacstrap /mnt tang clevis mkinitcpio-nfs-utils luksmeta &&
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 32" &&
 echo "copy post installation script"
 cp -fr post  /mnt/ &&
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 33" &&
 echo "copy post installation script" &&
 git clone https://github.com/blackbird-package/level20.git /mnt/opt/config &&
@@ -336,7 +335,7 @@ cp -fr /mnt/opt/config/udev/* /mnt &&
 cp $(pwd)/config /mnt/post &&
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 34" &&
 genfstab -U /mnt > /mnt/etc/fstab &&
 echo "" >> /mnt/etc/fstab &&
@@ -344,6 +343,6 @@ echo "# /dev/mapper/proc-temp" >> /mnt/etc/fstab &&
 echo "tmpfs     					/tmp        		tmpfs   defaults,rw,nosuid,nodev,noexec,relatime,size=256M" >>  /mnt/etc/fstab &&
 
 
-sleep 1 && clear &&
+sleep 3 && clear &&
 echo "level 35" &&
 arch-chroot /mnt /bin/bash /post/udvtang-post-install
