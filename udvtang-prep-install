@@ -7,9 +7,9 @@ if [[ -e /mnt/* ]];then
 fi
 
 if [[ -e /dev/proc ]];then
-    yes | lvremove /dev/proc/*
-    yes | vgremove proc
-    yes | pvremove /dev/mapper/proc
+    yes Y | lvremove /dev/proc/* &&
+    yes Y | vgremove proc &&
+    yes Y | pvremove /dev/mapper/proc &&
     cryptsetup luksClose /dev/mapper/proc   
 fi
 
