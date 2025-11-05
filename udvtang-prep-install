@@ -7,7 +7,6 @@ if [[ -e /mnt/* ]];then
 fi
 
 if [[ -e /dev/proc ]];then
-    swapoff /dev/proc/swap
     yes | lvremove /dev/proc/*
     yes | vgremove proc
     yes | pvremove /dev/mapper/proc
