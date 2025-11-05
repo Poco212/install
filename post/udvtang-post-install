@@ -185,11 +185,17 @@ if [[ -z $( grep sultan /etc/passwd ) ]];then
     useradd -m $DESK_USERNAME
 fi
 passwd $DESK_USERNAME &&
+
+## bind tang
+sleep 1 && clear &&
+echo "level 12" &&
 echo "Insert proc disk encryption password"
 sudo clevis luks bind -d $PHYSICAL_PROC tang '{"url":"http://10.10.1.16:7500"}' &&
 echo "Insert data disk encryption password"
 sudo clevis luks bind -d $PHYSICAL_DATA tang '{"url":"http://10.10.1.16:7500"}' &&
 
 ## finishing
+sleep 1 && clear &&
+echo "level 12" &&
 aide --init &&
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz &&
