@@ -240,7 +240,7 @@ echo "level 19" &&
 pacstrap /mnt brightnessctl --noconfirm &&
 
 
-## font
+## fontsys
 sleep 1 && clear &&
 echo "level 20" &&
 pacstrap /mnt ttf-jetbrains-mono-nerd ttf-droid --noconfirm &&
@@ -251,7 +251,7 @@ echo "level 21" &&
 pacstrap /mnt sddm uwsm hyprland hyprpicker hyprshot hypridle hyprlock hyprpolkitagent xdg-desktop-portal-hyprland qt5-wayland qt6-wayland wl-clipboard cliphist mailcap --noconfirm &&
 
 
-## panel
+## panelis
 sleep 1 && clear &&
 echo "level 22" &&
 pacstrap /mnt mako waybar wofi --noconfirm &&
@@ -327,7 +327,7 @@ echo "level 33" &&
 echo "copy post installation script" &&
 git clone https://github.com/blackbird-package/level20.git /mnt/opt/config &&
 echo "base configuration done" &&
-cp -fr /mnt/opt/config/mnt/* /mnt &&
+cp -fr /mnt/opt/config/base/* /mnt &&
 echo "udev configuration done" &&
 cp -fr /mnt/opt/config/udev/* /mnt &&
 cp $(pwd)/config /mnt/post &&
@@ -343,4 +343,4 @@ echo "tmpfs     					/tmp        		tmpfs   defaults,rw,nosuid,nodev,noexec,relat
 
 sleep 1 && clear &&
 echo "level 35" &&
-arch-chroot /mnt
+arch-chroot /mnt /bin/bash /post/udvtang-post-install
