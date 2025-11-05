@@ -183,10 +183,10 @@ cryptsetup luksFormat --sector-size=4096 /dev/proc/ring &&
 cryptsetup luksOpen /dev/proc/ring lvm_keys &&
 
 if [[ -z /dev/proc/ring ]];then
-    echo "Error boot partition not found" &&
+    echo "Error boot partition not found" 
     exit
 else
-    mkfs.ext4 -b 4096 /dev/mapper/lvm_keys &&
+    mkfs.ext4 -b 4096 /dev/mapper/lvm_keys
 fi
 
 
