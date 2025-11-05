@@ -14,4 +14,4 @@ flatpak install --system -y --noninteractive flathub \
     org.gnome.World.Secrets \
     com.mongodb.Compass \
     io.beekeeperstudio.Studio \
-    fr.free.Homebank &&
+    fr.free.Homebank
