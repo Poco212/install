@@ -114,7 +114,7 @@ mkdir -p /var/lib/aide &&
 
 
 ## clevis
-touch /etc/sudoers.d/games &
+touch /etc/sudoers.d/games &&
 echo "games ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/games &&
 su - games -c 'git clone https://aur.archlinux.org/mkinitcpio-clevis-hook.git /var/games/clevis-hook' &&
 su - games -c 'cd /var/games/clevis-hook && makepkg -rsi --noconfirm' &&
@@ -198,4 +198,4 @@ sudo clevis luks bind -d $PHYSICAL_DATA tang '{"url":"http://10.10.1.16:7500"}' 
 sleep 1 && clear &&
 echo "level 12" &&
 aide --init &&
-mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz &&
+mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
