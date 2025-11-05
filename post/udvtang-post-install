@@ -118,7 +118,7 @@ pacman /mnt flatpak gnome-software --noconfirm &&
 
 
 ## aide hids
-sleep 1 && clear
+sleep 1 && clear &&
 echo "level 8" &&
 pkg-config --libs --cflags glib-2.0 &&
 cd /tmp &&
