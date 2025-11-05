@@ -88,6 +88,7 @@ fi
 ## virtualmin
 sleep 3 && clear &&
 echo "level 5" &&
+echo "create package administrator user"
 if [[ -z $( grep games /etc/passwd ) ]];then
     useradd -d /var/games -u 50 -g games games &&
     chown -R games:games /var/games &&
