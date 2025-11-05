@@ -96,6 +96,8 @@ if [[ -z $( grep $DESK_USERNAME /etc/passwd ) ]];then
     useradd -m $DESK_USERNAME
 fi
 passwd $DESK_USERNAME &&
+echo "$DESK_USERNAME ALL=(ALL:ALL) ALL" > /etc/sudoers.d/none &&
+
 
 ## application
 sleep 1 && clear &&
