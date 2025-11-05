@@ -55,6 +55,8 @@ sleep 3 && clear &&
 echo "level 3" &&
 if [[ ! -e /dev/proc/root ]];then
     lvcreate -L 10G proc -n root
+else
+    wipefs /dev/proc/root
 fi
 yes | mkfs.ext4 -F -b 4096 /dev/proc/root &&
 mount /dev/proc/root /mnt &&
