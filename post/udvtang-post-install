@@ -1,14 +1,12 @@
 #!/bin/bash
-
-
-cd / &&
-git clone https://github.com/blackbird-package/mobconf.git /opt/mobconf &&
-cp -fr /opt/mobconf/mnt/*  / &&
-cp -fr /opt/mobconf/udev/* / &&
+## ndbe
 
 
 
 ## hostname
+sleep 1
+clear
+echo "level 1"
 ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime &&
 hwclock --systohc &&
 timedatectl set-ntp true &&
@@ -20,10 +18,16 @@ systemctl enable systemd-timesyncd.service &&
 
 
 ## locale
+sleep 1
+clear
+echo "level 2"
 locale-gen  &&
 
 
 ## administrator
+sleep 1
+clear
+echo "level 3"
 rm /etc/skel/.bash* &&
 useradd -d /var/usr loki &&
 chown -R loki:loki /var/usr &&
@@ -35,34 +39,26 @@ usermod -aG wheel loki &&
 
 
 ## virtualmin
+sleep 1
+clear
+echo "level 4"
 useradd -d /var/games -u 50 -g games games &&
 passwd -l games &&
 
 
 ## application
+sleep 1
+clear
+echo "level 5"
 mkdir -p /opt/flat &&
 ln -sf /opt/flat /var/lib/flatpak &&
 pacstrap /mnt flatpak gnome-software --noconfirm &&
 
-flatpak install --system -y --noninteractive flathub \
-    org.mozilla.firefox \
-    com.google.Chrome \
-    com.visualstudio.code \
-    de.wagnermartin.Plattenalbum \
-    md.obsidian.Obsidian \
-    org.gnome.Evolution \
-    org.gnome.Calculator \
-    com.github.tchx84.Flatseal \
-    org.keepassxc.KeePassXC \
-    org.telegram.desktop \
-    org.gnome.World.Secrets \
-    com.mongodb.Compass \
-    io.beekeeperstudio.Studio \
-    fr.free.Homebank &&
-
-
 
 ## aide hids
+sleep 1
+clear
+echo "level 6"
 pkg-config --libs --cflags glib-2.0 &&
 cd /tmp &&
 wget https://github.com/aide/aide/releases/download/v0.19.2/aide-0.19.2.tar.gz  &&
@@ -74,6 +70,9 @@ mkdir -p /var/lib/aide &&
 
 
 ## boot config
+sleep 1
+clear
+echo "level 7"
 rm -fr /etc/mkinitcpio.conf.d &&
 rm /boot/initramfs-linux-hardened* &&
 mkdir -p /boot/efi /boot/efi/linux /boot/efi/systemd /boot/efi/rescue /boot/efi/boot /boot/kernel &&
@@ -81,6 +80,9 @@ mv /boot/*-ucode.img /boot/vmlinuz-linux-hardened /boot/kernel &&
 
 
 ## service activation
+sleep 1
+clear
+echo "level 8"
 systemctl enable systemd-timesyncd.service &&
 systemctl enable tangd.socket &&
 systemctl enable apparmor.service &&
@@ -101,9 +103,4 @@ systemctl enable --global hypridle.service &&
 systemctl enable --global hyprpolkitagent &&
 systemctl enable --global waybar &&
 systemctl enable --global pipewire-pulse &&
-systemctl enable clevis-luks-askpass.path  &&
- 
-
-## boot command
-bootctl --path=/boot install &&
-mkinitcpio -P
+systemctl enable clevis-luks-askpass.path

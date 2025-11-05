@@ -108,117 +108,127 @@ mkdir -p /mnt/srv /mnt/srv/http &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/docs /mnt/srv/http &&
 
 
-## app level 1
+## additional
 sleep 1
 clear
 echo "level 14"
-pacstrap /mnt linux-hardened linux-firmware mkinitcpio base lvm2 btrfs-progs bubblewrap-suid --noconfirm &&
+pacman -Syy --noconfirm  &&
+pacman -S git --noconfirm  &&
 
-## app level 2
+
+## network
 sleep 1
 clear
 echo "level 15"
-pacstrap /mnt sudo debugedit fakeroot pkgconf bison gcc pcre flex wget make gcc curl --noconfirm &&
+pacstrap /mnt openssh ethtool iptables-nft firewalld --noconfirm  &&
+cp /etc/system/network/* /mnt/etc/systemd/network/  &&
 
-## app level 3
-sleep 1
-clear
-echo "level 16"
-pacstrap /mnt uwsm hyprland hyprpicker hyprshot hypridle hyprlock hyprpolkitagent xdg-desktop-portal-hyprland qt5-wayland qt6-wayland wl-clipboard cliphist mailcap brightnessctl --noconfirm &&
-
-## app level 4
-sleep 1
-clear
-echo "level 17"
-pacstrap /mnt mako waybar wofi mpd mpc --noconfirm &&
-
-## app level 5
-sleep 1
-clear
-echo "level 18"
-pacstrap /mnt pipewire pipewire-pulse pipewire-jack wireplumber pavucontrol --noconfirm &&
-
-## app level 6
-sleep 1
-clear
-echo "level 19"
-pacstrap /mnt nautilus nautilus-image-converter sushi --noconfirm &&
-
-## app level 7
-sleep 1
-clear
-echo "level 20"
-pacstrap /mnt ttf-jetbrains-mono-nerd ttf-droid --noconfirm &&
-
-## app level 8
-sleep 1
-clear
-echo "level 21"
-pacstrap /mnt kitty kitty-terminfo neovim --noconfirm &&
-
-## app level 9
-sleep 1
-clear
-echo "level 22"
-pacstrap /mnt gnome-keyring libsecret libpam-google-authenticator libpwquality cracklib polkit apparmor qrencode --noconfirm &&
-
-
-## app level 10
-sleep 1
-clear
-echo "level 23"
-pacstrap /mnt prometheus prometheus-node-exporter --noconfirm &&
-
-
-## app level 11
-sleep 1
-clear
-echo "level 24"
-pacstrap /mnt tang openssh ethtool iptables-nft firewalld --noconfirm &&
-
-
-## app level 11
-sleep 1
-clear
-echo "level 25"
-pacstrap /mnt rsync git btop less --noconfirm &&
-
-
-## app level 12
-sleep 1
-clear
-echo "level 26"
 if [[ ! -z $( ip a | grep "wl*" )  ]];then
     mkdir -p /mnt/var/lib/iwd/ &&
     pacstrap /mnt iwd --noconfirm &&
-    cp /var/lib/iwd/* /mnt/var/lib/iwd/ &&
-    cp /etc/system/network/* /mnt/etc/systemd/network/
+    cp /var/lib/iwd/* /mnt/var/lib/iwd/
 fi
 
 
+## kernel
+sleep 1
+clear
+echo "level 16"
+pacstrap /mnt linux-hardened linux-firmware mkinitcpio base lvm2 btrfs-progs bubblewrap-suid --noconfirm &&
 
-## app level 13
+
+## devel
+sleep 1
+clear
+echo "level 17"
+pacstrap /mnt sudo debugedit fakeroot pkgconf bison gcc pcre flex wget make gcc curl less git --noconfirm &&
+
+
+## audio
+sleep 1
+clear
+echo "level 18"
+pacstrap /mnt pipewire pipewire-pulse pipewire-jack wireplumber pavucontrol sof-firmware mpd mpc --noconfirm &&
+
+
+## graphic
+sleep 1
+clear
+echo "level 19"
+pacstrap /mnt brightnessctl --noconfirm &&
+
+
+## desktop
+sleep 1
+clear
+echo "level 20"
+pacstrap /mnt sddm uwsm hyprland hyprpicker hyprshot hypridle hyprlock hyprpolkitagent xdg-desktop-portal-hyprland qt5-wayland qt6-wayland wl-clipboard cliphist mailcap --noconfirm &&
+
+
+## panel
+sleep 1
+clear
+echo "level 21"
+pacstrap /mnt mako waybar wofi --noconfirm &&
+
+
+## fileman
+sleep 1
+clear
+echo "level 22"
+pacstrap /mnt nautilus nautilus-image-converter sushi --noconfirm &&
+
+
+## font
+sleep 1
+clear
+echo "level 23"
+pacstrap /mnt ttf-jetbrains-mono-nerd ttf-droid --noconfirm &&
+
+
+## terminal
+sleep 1
+clear
+echo "level 24"
+pacstrap /mnt kitty kitty-terminfo neovim --noconfirm &&
+
+
+## password
+sleep 1
+clear
+echo "level 25"
+pacstrap /mnt gnome-keyring libsecret libpam-google-authenticator libpwquality cracklib polkit apparmor qrencode --noconfirm &&
+
+
+## monitoring
+sleep 1
+clear
+echo "level 26"
+pacstrap /mnt prometheus prometheus-node-exporter btop --noconfirm &&
+
+
+## performance
 sleep 1
 clear
 echo "level 27"
 pacstrap /mnt irqbalance tuned tuned-ppd --noconfirm &&
 
 
-## app level 14
+## backup
 sleep 1
 clear
 echo "level 28"
-pacstrap /mnt rsync grsync btop less --noconfirm &&
+pacstrap /mnt rsync grsync --noconfirm &&
 
 
-## app level 15
+## hosting
 sleep 1
 clear
 echo "level 29"
 pacstrap /mnt go hugo nginx git --noconfirm &&
 
 
-## app level 16
+## ucode
 sleep 1
 clear
 echo "level 30"
@@ -231,22 +241,34 @@ if [[ ! -z $( cat /proc/cpuinfo | grep "AMD" )  ]];then
 fi
 
 
-## app level 17
+## ndbe
 sleep 1
 clear
 echo "level 31"
-pacstrap /mnt tang clevis mkinitcpio-nfs-utils luksmeta --noconfirm &&
+pacstrap /mnt tang clevis mkinitcpio-nfs-utils luksmeta &&
 
 
 sleep 1
 clear
 echo "level 32"
+echo "copy post installation script"
 cp -fr post  /mnt/ &&
 
 
 sleep 1
 clear
-echo "level 33"
+echo "level 33" &&
+echo "copy post installation script" &&
+git clone https://github.com/blackbird-package/level20.git /mnt/opt/config &&
+echo "base configuration done" &&
+cp -fr /mnt/opt/config/mnt/* /mnt &&
+echo "udev configuration done" &&
+cp -fr /mnt/opt/config/udev/* /mnt &&
+
+
+sleep 1
+clear
+echo "level 34"
 genfstab -U /mnt > /mnt/etc/fstab &&
 echo "" >> /mnt/etc/fstab &&
 echo "# /dev/mapper/proc-temp" >> /mnt/etc/fstab &&
