@@ -190,91 +190,23 @@ fi
 ## kernel
 sleep 3 && clear &&
 echo "level 16" &&
-pacstrap /mnt linux-hardened linux-firmware mkinitcpio base lvm2 btrfs-progs bubblewrap-suid --noconfirm &&
-
-
-## devel
-sleep 3 && clear &&
-echo "level 17" &&
-pacstrap /mnt sudo debugedit fakeroot pkgconf bison gcc pcre flex wget make gcc curl less git --noconfirm &&
-
-
-## audio
-sleep 3 && clear &&
-echo "level 18" &&
-pacstrap /mnt pipewire pipewire-pulse pipewire-jack wireplumber pavucontrol sof-firmware mpd mpc --noconfirm &&
-
-
-## graphic
-sleep 3 && clear &&
-echo "level 19" &&
-pacstrap /mnt brightnessctl xorg-xwayland --noconfirm &&
-
-
-## fontsys
-sleep 3 && clear &&
-echo "level 20" &&
-pacstrap /mnt ttf-jetbrains-mono-nerd ttf-droid --noconfirm &&
-
-## desktop
-sleep 3 && clear &&
-echo "level 21" &&
-pacstrap /mnt sddm uwsm hyprland hyprpicker hyprshot hypridle hyprlock hyprpolkitagent xdg-desktop-portal-hyprland qt5-wayland qt6-wayland wl-clipboard cliphist mailcap --noconfirm &&
-
-
-## panelis
-sleep 3 && clear &&
-echo "level 22" &&
-pacstrap /mnt mako waybar wofi --noconfirm &&
-
-
-## fileman
-sleep 3 && clear &&
-echo "level 23" &&
-pacstrap /mnt nautilus nautilus-image-converter sushi --noconfirm &&
-
-
-## terminal
-sleep 3 && clear &&
-echo "level 24" &&
-pacstrap /mnt kitty kitty-terminfo neovim --noconfirm &&
-
-
-## password
-sleep 3 && clear &&
-echo "level 25" &&
-pacstrap /mnt gnome-keyring libsecret libpam-google-authenticator libpwquality cracklib polkit apparmor qrencode --noconfirm &&
-
-
-## monitoring
-sleep 3 && clear &&
-echo "level 26" &&
-pacstrap /mnt prometheus prometheus-node-exporter btop --noconfirm &&
-
-
-## performance
-sleep 3 && clear && 
-echo "level 27" &&
-pacstrap /mnt irqbalance tuned tuned-ppd --noconfirm &&
-
-
-## backup
-sleep 3 && clear &&
-echo "level 28" &&
-pacstrap /mnt rsync grsync --noconfirm &&
-
-
-## hosting
-sleep 3 && clear &&
-echo "level 29" &&
-pacstrap /mnt go hugo nginx --noconfirm &&
-
-
-## package
-sleep 3 && clear &&
-echo "level 30" &&
-pacstrap /mnt flatpak gnome-software --noconfirm  &&
-
+pacstrap /mnt linux-hardened linux-firmware mkinitcpio base lvm2 btrfs-progs bubblewrap-suid \
+    sudo debugedit fakeroot pkgconf bison gcc pcre flex wget make gcc curl less git \
+    pipewire pipewire-pulse pipewire-jack wireplumber pavucontrol sof-firmware mpd mpc \
+    brightnessctl xorg-xwayland uwsm libnewt \
+    ttf-jetbrains-mono-nerd ttf-droid \
+    hyprland hyprpicker hyprshot hypridle hyprlock hyprpolkitagent xdg-desktop-portal-hyprland qt5-wayland qt6-wayland wl-clipboard cliphist mailcap \
+    sddm mako waybar \ 
+    nautilus nautilus-image-converter sushi \
+    kitty kitty-terminfo neovim \
+    gnome-keyring libsecret libpam-google-authenticator libpwquality cracklib polkit apparmor qrencode \
+    prometheus prometheus-node-exporter btop \
+    irqbalance tuned tuned-ppd \
+    rsync grsync \
+    go hugo nginx \
+    flatpak gnome-software \
+    tang clevis mkinitcpio-nfs-utils luksmeta \
+    --noconfirm &&
 
 ## ucode
 sleep 3 && clear &&
@@ -286,11 +218,6 @@ if [[ ! -z $( cat /proc/cpuinfo | grep "AMD" )  ]];then
     pacstrap /mnt amd-ucode --noconfirm
 fi
 
-
-## ndbe
-sleep 3 && clear &&
-echo "level 32" &&
-pacstrap /mnt tang clevis mkinitcpio-nfs-utils luksmeta &&
 
 
 sleep 3 && clear &&
