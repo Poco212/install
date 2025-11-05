@@ -53,13 +53,14 @@ mount /dev/proc/root /mnt &&
 
 sleep 3 && clear &&
 echo "level 4" &&
+yes Y | mkfs.vfat -F32 -S 4096 -n BOOT $PHYSICAL_BOOT &&
+mkdir /mnt/boot &&
+mount -o uid=0,gid=0,fmask=0077,dmask=0077 $PHYSICAL_BOOT /mnt/boot &&
+
 if [[ ! -e /mnt/boot ]];then
     echo "Error boot partition not found"
     exit
 fi
-yes Y | mkfs.vfat -F32 -S 4096 -n BOOT $PHYSICAL_BOOT &&
-mkdir /mnt/boot &&
-mount -o uid=0,gid=0,fmask=0077,dmask=0077 $PHYSICAL_BOOT /mnt/boot &&
 
 
 sleep 3 && clear &&
