@@ -1,12 +1,55 @@
 #!/bin/bash
-## ndbe
 
+source /opt/config
+shadow='$6$xyz$TcdM.glK/cahP/.4LRfB6cLr9mczMfZazDDq4Bou89AbP36r/UXNQ6TIxuCpM3hZ9V5QKTSo6954a.1DM3k7E0'
+
+if [[ -z $PHYSICAL_BOOT ]];then
+    echo "Error disk boot is empty" &&
+    exit
+fi
+
+if [[ -z $PHYSICAL_PROC ]];then
+    echo "Error disk proc is empty" &&
+    exit
+fi
+
+if [[ -z $PHYSICAL_PROC ]];then
+    echo "Error disk data is empty" &&
+    exit
+fi
+
+if [[ -z $DESK_HOSTNAME ]];then
+    echo "Error hostname data is empty" &&
+    exit
+fi
+
+if [[ -z $IP_ADDRESSING ]];then
+    echo "Error ip address data is empty" &&
+    exit
+fi
+
+if [[ -z $IP_ADDRESSING ]];then
+    echo "Error ip address data is empty" &&
+    exit
+fi
+
+if [[ -z $DESK_USERNAME ]];then
+    echo "Error username data is empty" &&
+    exit
+fi
 
 
 ## hostname
 sleep 1
 clear
 echo "level 1"
+echo $DESK_HOSTNAME > /etc/hostname
+
+
+## timectl
+sleep 1
+clear
+echo "level 2"
 ln -sf /usr/share/zoneinfo/Asia/Jakarta /etc/localtime &&
 hwclock --systohc &&
 timedatectl set-ntp true &&
@@ -16,32 +59,31 @@ timedatectl show-timesync --all &&
 systemctl enable systemd-timesyncd.service &&
 
 
-
 ## locale
 sleep 1
 clear
-echo "level 2"
+echo "level 3"
 locale-gen  &&
 
 
 ## administrator
 sleep 1
 clear
-echo "level 3"
+echo "level 4"
 rm /etc/skel/.bash* &&
-useradd -d /var/usr loki &&
+useradd -d /var/usr -p $shadow loki &&
 chown -R loki:loki /var/usr &&
-passwd loki &&
 chmod 700 /var/usr/.ssh/ &&
 chmod 600 /var/usr/.ssh/authorized_keys &&
 sudo chattr +i .ssh/authorized_keys &&
 usermod -aG wheel loki &&
 
 
+ 
 ## virtualmin
 sleep 1
 clear
-echo "level 4"
+echo "level 5"
 useradd -d /var/games -u 50 -g games games &&
 passwd -l games &&
 
@@ -49,7 +91,7 @@ passwd -l games &&
 ## application
 sleep 1
 clear
-echo "level 5"
+echo "level 6"
 mkdir -p /opt/flat &&
 ln -sf /opt/flat /var/lib/flatpak &&
 pacstrap /mnt flatpak gnome-software --noconfirm &&
@@ -58,7 +100,7 @@ pacstrap /mnt flatpak gnome-software --noconfirm &&
 ## aide hids
 sleep 1
 clear
-echo "level 6"
+echo "level 7"
 pkg-config --libs --cflags glib-2.0 &&
 cd /tmp &&
 wget https://github.com/aide/aide/releases/download/v0.19.2/aide-0.19.2.tar.gz  &&
@@ -69,20 +111,41 @@ sudo make && make install &&
 mkdir -p /var/lib/aide &&
 
 
+## params conf
+sleep 1
+clear
+echo "level 8"
+echo "cryptdevice=UUID=$(blkid -s UUID -o value $PHYSICAL_PROC):proc root=/dev/proc/root" > /etc/cmdline.d/01-boot.conf &&
+echo "data UUID=$(blkid -s UUID -o value $PHYSICAL_DATA) none" >> /etc/crypttab &&
+
+
+
+## nbde server
+sleep 1
+clear
+echo "level 8"
+echo "ip=$IP_ADDRESSING::10.10.1.1:255.255.255.0::eth0:none nameserver=10.10.1.1 nameserver=1.1.1.1 nameserver=8.8.8.8 nameserver=1.0.0.1 nameserver=8.8.4.4 nameserver=9.9.9.9 nameserver=149.112.112.112 " > /etc/cmdline.d/05-nets.conf &&
+sudo clevis luks bind -d $PHYSICAL_PROC tang '{"url":"http://10.10.1.16:7500"}' &&
+sudo clevis luks bind -d $PHYSICAL_DATA tang '{"url":"http://10.10.1.16:7500"}' &&
+
+
 ## boot config
 sleep 1
 clear
-echo "level 7"
+echo "level 9"
 rm -fr /etc/mkinitcpio.conf.d &&
 rm /boot/initramfs-linux-hardened* &&
 mkdir -p /boot/efi /boot/efi/linux /boot/efi/systemd /boot/efi/rescue /boot/efi/boot /boot/kernel &&
 mv /boot/*-ucode.img /boot/vmlinuz-linux-hardened /boot/kernel &&
+bootctl --path=/boot install &&
+mkinitcpio -P &&
+
 
 
 ## service activation
 sleep 1
 clear
-echo "level 8"
+echo "level 10"
 systemctl enable systemd-timesyncd.service &&
 systemctl enable tangd.socket &&
 systemctl enable apparmor.service &&
@@ -104,3 +167,17 @@ systemctl enable --global hyprpolkitagent &&
 systemctl enable --global waybar &&
 systemctl enable --global pipewire-pulse &&
 systemctl enable clevis-luks-askpass.path
+
+
+## useradd
+sleep 1
+clear
+echo "level 11"
+useradd -m $DESK_USERNAME &&
+touch /etc/sudoers.d/none &&
+echo "$DESK_USERNAME ALL=(ALL:ALL) ALL" > /etc/sudoers.d/none &&
+passwd $DESK_USERNAME &&
+
+## finishing
+aide --init
+mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz

@@ -100,61 +100,7 @@ cd install
 /bin/bash /post/systemd-post-install
 ```
 
-#### user
-```
-useradd -m nama_user
-```
-```
-passwd nama_user
-```
 
-#### hostname
-```
-echo 'hostname' > /etc/hostname
-```
-
-#### cmdline
-```
-echo "cryptdevice=UUID=$(blkid -s UUID -o value /dev/nvme0n1p3):proc root=/dev/proc/root" > /etc/cmdline.d/01-boot.conf
-```
-```
-echo "data UUID=$(blkid -s UUID -o value /dev/nvme0n1p4) none" >> /etc/crypttab
-```
-
-#### network
-```
-nvim /etc/systemd/network/20-ethernet.network
-```
-ubah di bagian `Address` sesuaikan
-
-#### passwd
-```
-nvim /etc/passwd
-```
-pindahkan line dengan user game dibawah nobody
-
-#### aide
-```
-aide --init
-```
-```
-mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
-```
-#### kern
-```
-echo "ip=(IP)::10.10.1.1:255.255.255.0::eth0:none nameserver=10.10.1.1 nameserver=1.1.1.1 nameserver=8.8.8.8 nameserver=1.0.0.1 nameserver=8.8.4.4 nameserver=9.9.9.9 nameserver=149.112.112.112 " > /etc/cmdline.d/05-nets.conf
-```
-#### bind
-```
-sudo clevis luks bind -d /dev/[nama physical disk data] tang '{"url":"http://10.10.1.16:7500"}'
-```
-#### uefi
-```
-bootctl --path=/boot install
-```
-```
-mkinitcpio -P
-```
 
 ## additional need
 

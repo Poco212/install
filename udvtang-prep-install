@@ -1,10 +1,22 @@
 #!/bin/bash
 
+source /install/config
 
-if [[ -z $DISK_BOOOT ]];then
+if [[ -z $PHYSICAL_BOOT ]];then
     echo "Error disk boot is empty" &&
     exit
 fi
+
+if [[ -z $PHYSICAL_PROC ]];then
+    echo "Error disk proc is empty" &&
+    exit
+fi
+
+if [[ -z $DESK_USERNAME ]];then
+    echo "Error username data is empty" &&
+    exit
+fi
+
 
 sleep 1
 clear
@@ -264,7 +276,7 @@ echo "base configuration done" &&
 cp -fr /mnt/opt/config/mnt/* /mnt &&
 echo "udev configuration done" &&
 cp -fr /mnt/opt/config/udev/* /mnt &&
-
+cp /install/config /mnt/post
 
 sleep 1
 clear
@@ -277,5 +289,5 @@ echo "tmpfs     					/tmp        		tmpfs   defaults,rw,nosuid,nodev,noexec,relat
 
 sleep 1
 clear
-echo "level 34"
+echo "level 35"
 arch-chroot /mnt

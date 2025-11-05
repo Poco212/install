@@ -1,0 +1,8 @@
+#!/bin/bash
+
+PHYSICAL_BOOT="/dev/nvme0n1p5"
+PHYSICAL_PROC="/dev/nvme0n1p7"
+PHYSICAL_DATA="/dev/nvme0n1p8"
+IP_ADDRESSING="10.10.1.152"
+DESK_HOSTNAME="lazarus"
+DESK_USERNAME="lazarus"
