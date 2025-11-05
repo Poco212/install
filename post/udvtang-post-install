@@ -179,7 +179,6 @@ systemctl enable clevis-luks-askpass.path &&
 ## useradd
 sleep 1 && clear &&
 echo "level 13" &&
-
 touch /etc/sudoers.d/none &&
 echo "$DESK_USERNAME ALL=(ALL:ALL) ALL" > /etc/sudoers.d/none &&
 
