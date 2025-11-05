@@ -114,6 +114,8 @@ mkdir -p /var/lib/aide &&
 
 
 ## clevis
+sleep 1 && clear &&
+echo "level 8" &&
 touch /etc/sudoers.d/games &&
 echo "games ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/games &&
 su - games -c 'git clone https://aur.archlinux.org/mkinitcpio-clevis-hook.git /var/games/clevis-hook' &&
@@ -124,7 +126,7 @@ rm /etc/sudoers.d/games &&
 
 ## params conf
 sleep 1 && clear &&
-echo "level 8" &&
+echo "level 9" &&
 echo "cryptdevice=UUID=$(blkid -s UUID -o value $PHYSICAL_PROC):proc root=/dev/proc/root" > /etc/cmdline.d/01-boot.conf &&
 echo "data UUID=$(blkid -s UUID -o value $PHYSICAL_DATA) none" >> /etc/crypttab &&
 
@@ -132,13 +134,13 @@ echo "data UUID=$(blkid -s UUID -o value $PHYSICAL_DATA) none" >> /etc/crypttab 
 
 ## nbde server
 sleep 1 && clear &&
-echo "level 8" &&
+echo "level 10" &&
 echo "ip=$IP_ADDRESSING::10.10.1.1:255.255.255.0::eth0:none nameserver=10.10.1.1 nameserver=1.1.1.1 nameserver=8.8.8.8 nameserver=1.0.0.1 nameserver=8.8.4.4 nameserver=9.9.9.9 nameserver=149.112.112.112 " > /etc/cmdline.d/05-nets.conf &&
 
 
 ## boot config
 sleep 1 && clear &&
-echo "level 9" &&
+echo "level 11" &&
 rm -fr /etc/mkinitcpio.conf.d &&
 rm /boot/initramfs-linux-hardened* &&
 mkdir -p /boot/efi /boot/efi/linux /boot/efi/systemd /boot/efi/rescue /boot/efi/boot /boot/kernel &&
@@ -150,7 +152,7 @@ mkinitcpio -P &&
 
 ## service activation
 sleep 1 && clear &&
-echo "level 10" &&
+echo "level 12" &&
 systemctl enable systemd-timesyncd.service &&
 systemctl enable tangd.socket &&
 systemctl enable apparmor.service &&
@@ -176,7 +178,7 @@ systemctl enable clevis-luks-askpass.path &&
 
 ## useradd
 sleep 1 && clear &&
-echo "level 11" &&
+echo "level 13" &&
 
 touch /etc/sudoers.d/none &&
 echo "$DESK_USERNAME ALL=(ALL:ALL) ALL" > /etc/sudoers.d/none &&
@@ -196,6 +198,6 @@ sudo clevis luks bind -d $PHYSICAL_DATA tang '{"url":"http://10.10.1.16:7500"}' 
 
 ## finishing
 sleep 1 && clear &&
-echo "level 12" &&
+echo "level 14" &&
 aide --init &&
 mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
