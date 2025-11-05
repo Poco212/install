@@ -23,15 +23,12 @@ if [[ -z $DESK_USERNAME ]];then
 fi
 
 
-
 if [[ -e /dev/mapper/proc ]];then
     cryptsetup luksFormat --sector-size=4096 $PHYSICAL_PROC &&
     cryptsetup luksOpen $PHYSICAL_PROC proc &&
     echo "encrypted proc volume" &&
     exit
 fi
-
-
 
 
 if [[ -e /dev/mapper/data ]];then
@@ -45,166 +42,132 @@ fi
 sleep 3 && clear &&
 echo "level 2" &&
 echo "create volume group proc" &&
-if [[ -e /dev/mapper/proc ]];then
-    pvcreate /dev/mapper/proc  &&
-    vgcreate proc /dev/mapper/proc
+if [[ -z $(vgs | grep proc ) ]];then
+    pvcreate /dev/mapper/proc  && vgcreate proc /dev/mapper/proc
 fi
 
 
 sleep 3 && clear &&
 echo "level 3" &&
-lvcreate -L 10G proc -n root &&
-mkfs.ext4 -b 4096 /dev/proc/root &&
+if [[ ! -e /dev/proc/root ]];then
+    lvcreate -L 10G proc -n root
+fi
+yes Y | mkfs.ext4 -b 4096 /dev/proc/root &&
 mount /dev/proc/root /mnt &&
 
-if [[ -e /dev/proc/root ]];then
-    echo "Error root partition not found" &&
-    exit
-fi
 
 
 sleep 3 && clear &&
 echo "level 4" &&
+if [[ ! -e /mnt/boot ]];then
+    echo "Error boot partition not found"
+    exit
+fi
 yes Y | mkfs.vfat -F32 -S 4096 -n BOOT $PHYSICAL_BOOT &&
 mkdir /mnt/boot &&
 mount -o uid=0,gid=0,fmask=0077,dmask=0077 $PHYSICAL_BOOT /mnt/boot &&
 
-if [[ -e /mnt/boot ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
 
 sleep 3 && clear &&
 echo "level 5" &&
-lvcreate -L 15G proc -n opts &&
+if [[ ! -e /dev/proc/opts ]];then
+    lvcreate -L 15G proc -n opts
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/opts &&
 mkdir /mnt/opt &&
 mount -o rw,nodev,nosuid,relatime /dev/proc/opts /mnt/opt &&
 
-if [[ -e /dev/proc/opts ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
-
 
 sleep 3 && clear &&
 echo "level 6" &&
-lvcreate -L 2G proc -n vars &&
+if [[ ! -e /dev/proc/vars ]];then
+   lvcreate -L 2G proc -n vars
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vars &&
 mkdir /mnt/var &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/vars /mnt/var &&
 
-if [[ -e /dev/proc/vars ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
-
 
 sleep 3 && clear &&
 echo "level 7" 
-lvcreate -L 512M proc -n libs &&
+if [[ ! -e /dev/proc/libs ]];then
+    lvcreate -L 512M proc -n libs
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/libs &&
 mkdir /mnt/var/usr &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/libs /mnt/var/usr &&
 
-if [[ -e /dev/proc/libs ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
-
 
 sleep 3 && clear &&
 echo "level 8" &&
-lvcreate -L 512M proc -n game &&
+if [[ ! -e /dev/proc/game ]];then
+    lvcreate -L 512M proc -n game
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/game &&
 mkdir /mnt/var/games &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/game /mnt/var/games &&
 
-if [[ -e /dev/proc/game ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
-
 
 sleep 3 && clear &&
 echo "level 9" &&
-lvcreate -L 1G proc -n vlog &&
+if [[ ! -e /dev/proc/vlog ]];then
+    lvcreate -L 1G proc -n vlog
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vlog &&
 mkdir /mnt/var/log &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/vlog /mnt/var/log &&
-
-if [[ -e /dev/proc/vlog ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
 
 
 sleep 3 &&
 clear &&
 echo "level 10" &&
-lvcreate -L 256M proc -n vaud &&
+if [[ ! -e /dev/proc/vaud ]];then
+    lvcreate -L 256M proc -n vaud
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vaud &&
 mkdir /mnt/var/log/audit &&
-mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/vaud /mnt/var/log/audit &&
-
-if [[ -e /dev/proc/vaud ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
+mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/vaud /mnt/var/log/audit
 
 
 sleep 3 &&
 clear &&
 echo "level 11" &&
-lvcreate -L 2G proc -n vtmp &&
+if [[ ! -e /dev/proc/vtmp ]];then
+    lvcreate -L 2G proc -n vtmp
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vtmp &&
 mkdir /mnt/var/tmp &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/vtmp /mnt/var/tmp &&
 
-if [[ -e /dev/proc/vtmp ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
-
 
 sleep 3 && clear &&
 echo "level 12" &&
-lvcreate -L 2G proc -n vpac &&
+if [[ ! -e /dev/proc/vpac ]];then
+    lvcreate -L 2G proc -n vpac
+fi
 yes Y | mkfs.ext4 -b 4096 /dev/proc/vpac &&
 mkdir -p /mnt/var/cache/pacman &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/vpac /mnt/var/cache/pacman &&
 
-if [[ -e /dev/proc/vpac ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
-
 
 sleep 3 && clear &&
 echo "level 13" &&
-lvcreate -L 512M proc -n ring &&
+if [[ ! -e /dev/proc/ring ]];then
+    lvcreate -L 512M proc -n ring
+fi
 cryptsetup luksFormat --sector-size=4096 /dev/proc/ring &&
 cryptsetup luksOpen /dev/proc/ring lvm_keys &&
-
-if [[ -e /dev/proc/ring ]];then
-    echo "Error boot partition not found" 
-    exit
-else
-    mkfs.ext4 -b 4096 /dev/mapper/lvm_keys
-fi
+mkfs.ext4 -b 4096 /dev/mapper/lvm_keys
 
 
 sleep 3 && clear &&
 echo "level 14" &&
-lvcreate -l100%FREE proc -n docs &&
+if [[ ! -e /dev/proc/docs ]];then
+    lvcreate -l100%FREE proc -n docs
+fi
 mkfs.ext4 -b 4096 /dev/proc/docs &&
 mkdir -p /mnt/srv /mnt/srv/http &&
 mount -o rw,nodev,noexec,nosuid,relatime /dev/proc/docs /mnt/srv/http &&
-
-if [[ -e /dev/proc/docs ]];then
-    echo "Error boot partition not found" &&
-    exit
-fi
 
 
 ## network
