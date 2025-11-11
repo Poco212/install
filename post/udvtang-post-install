@@ -189,11 +189,6 @@ systemctl enable systemd-networkd &&
 systemctl enable systemd-resolved &&
 systemctl enable aide.timer &&
 systemctl enable sddm &&
-systemctl enable --global gcr-ssh-agent.socket &&
-systemctl enable --global hypridle.service &&
-systemctl enable --global hyprpolkitagent &&
-systemctl enable --global waybar &&
-systemctl enable --global pipewire-pulse &&
 systemctl disable systemd-networkd-wait-online.service &&
 systemctl enable clevis-luks-askpass.path &&
 
