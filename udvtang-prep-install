@@ -182,7 +182,7 @@ pacstrap /mnt openssh ethtool iptables-nft firewalld --noconfirm  &&
 
 if [[ ! -z $( ip a | grep "wl*" )  ]];then
     mkdir -p /mnt/var/lib/iwd/ &&
-    pacstrap /mnt iwd --noconfirm &&
+    pacstrap /mnt iwd impala --noconfirm &&
     cp /var/lib/iwd/* /mnt/var/lib/iwd/
 fi
 
@@ -200,13 +200,13 @@ fi
 ## based
 sleep 3 && clear &&
 echo "level 16" &&
-pacstrap /mnt linux-hardened linux-firmware mkinitcpio base lvm2 btrfs-progs bubblewrap-suid \
+pacstrap /mnt linux-hardened linux-firmware-intel mkinitcpio base lvm2 btrfs-progs bubblewrap-suid \
     sudo debugedit fakeroot pkgconf bison gcc pcre flex wget make gcc curl less git \
     pipewire pipewire-pulse pipewire-jack wireplumber pavucontrol sof-firmware mpd mpc \
     brightnessctl xorg-xwayland uwsm libnewt \
     ttf-jetbrains-mono-nerd ttf-droid \
     hyprland hyprpicker hyprshot hypridle hyprlock hyprpolkitagent xdg-desktop-portal-hyprland qt5-wayland qt6-wayland wl-clipboard cliphist mailcap \
-    sddm mako waybar \ 
+    sddm mako waybar weston \
     nautilus nautilus-image-converter sushi \
     kitty kitty-terminfo neovim \
     gnome-keyring libsecret libpam-google-authenticator libpwquality cracklib polkit apparmor qrencode \
